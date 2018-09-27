@@ -73,18 +73,18 @@ function init() {
 function initSearch() {
 
     // specify default search algorithm to use for planning
-    //search_alg = "depth-first";  
-    //search_alg = "breadth-first";  
-    //search_alg = "greedy-best-first";  
-    search_alg = "A-star";  
+    // search_alg = "depth-first";  
+    search_alg = "breadth-first";  
+    // search_alg = "greedy-best-first";  
+    // search_alg = "A-star";  
     //search_alg = "RRT";  
     //search_alg = "RRT-connect";  
     //search_alg = "RRT-star";  
 
     // specify default the world for the planner 
     //  (stored as "range" global variable with name "planning_scene")
-    //planning_scene = "empty";
-    planning_scene = "misc";
+    planning_scene = "empty";
+    // planning_scene = "misc";
     //planning_scene = "narrow1";
     //planning_scene = "narrow2";
     //planning_scene = "three_sections";
@@ -273,7 +273,141 @@ function animate() {
     requestAnimationFrame( animate );
 }
 
+function dequeue(heap) //heap.priority
+{
+  var PrintE;
+  PrintE = heap[0];
+  heap[0] = heap[heap.length - 1];
+
+  var a,large;
+  var temp = heap.pop();
+  for (a=0;a<heap.length;a=large){
+    if (2*a+2 >= heap.length)
+        {break;}
+    if(heap[2*a+2]){
+
+        if (heap[2*a+1].priority > heap[2*a+2].priority) // use to swap those two numbers
+        {
+            if (heap[a].priority > heap[2*a+2].priority)
+            {
+              temp = heap[a];
+              heap[a] = heap[2*a+2];
+              heap[2*a+2] = temp; 
+              large = 2*a+2;             
+            }
+            else
+              {break;}
+        }
+        else
+        {
+         if (heap[a].priority>heap[2*a+1].priority)
+            {
+              temp = heap [2*a+1];
+              heap[2*a+1] = heap[a];
+              heap[a] = temp; 
+              large = 2*a+1;
+            }
+          else
+            {break;}
+        }
+
+      }
+    else{
+          if (heap[a].priority>heap[2*a+1].priority)
+            {
+              temp = heap [2*a+1];
+              heap[2*a+1] = heap[a];
+              heap[a] = temp; 
+              large = 2*a+1;
+            }
+          else
+            {break;}
+    }       
+}
+
+  return PrintE;
+}
+
+function enqueue(heap,new_element) 
+{
+ 
+  var adj,temp;
+  heap.push(new_element);
+  for (adj=heap.length-1;adj>0;adj=Math.floor((adj-1)/2))
+  {
+      if (new_element.priority < heap[Math.floor((adj-1)/2)].priority) // use to swap those two numbers
+        {
+            temp = new_element;
+            heap[adj] = heap[Math.floor((adj-1)/2)];
+            heap[Math.floor((adj-1)/2)] = temp;      
+        }
+  }
+}
+
+
 function iterateGraphSearch() {
+
+    switch (search_alg) {
+        case "depth-first":
+            var cur_node = visit_queue.pop();
+            break;
+        case "breadth-first":
+            var cur_node = visit_queue.shift();
+            break;
+        case "greedy-best-first": 
+            var cur_node = dequeue(visit_queue);
+            break;
+        case "A-star":
+            var cur_node = dequeue(visit_queue);
+        }
+    
+    if(Math.abs(cur_node.x - q_goal[0]) + Math.abs(cur_node.y - q_goal[1]) < eps){
+        drawHighlightedPathGraph(cur_node);
+        search_iterate = false;
+        return "succeeded";
+    }
+
+    cur_node.visited = true;
+    draw_2D_configuration([cur_node.x, cur_node.y]);
+    var nbr_list = [[0, 1], [-1,0],[0,-1],[1,0]];
+    for (var i=0;i<4;i++){
+        var i_nbr = cur_node.i + nbr_list[i][0];
+        var j_nbr = cur_node.j + nbr_list[i][1];
+        var cur_nbrnode = G[i_nbr][j_nbr];
+        if(testCollision([cur_nbrnode.x, cur_nbrnode.y])){
+            continue;
+        }
+        
+        if (!cur_nbrnode.visited) 
+        {
+            
+            if(cur_nbrnode.distance > cur_node.distance + eps)
+            {
+                cur_nbrnode.queued = true;
+                cur_nbrnode.parent = cur_node;
+                cur_nbrnode.distance = cur_node.distance + eps;
+
+                switch (search_alg) {
+                    case "depth-first":
+                    case "breadth-first":
+                        visit_queue.push(cur_nbrnode);
+                        break;
+                    case "greedy-best-first": 
+                        cur_nbrnode.priority = Math.sqrt(Math.pow(q_goal[0] - cur_nbrnode.x, 2) + Math.pow(q_goal[1] - cur_nbrnode.y, 2));
+                         enqueue(visit_queue,cur_nbrnode);
+                        break;
+                    case "A-star":  
+                        cur_nbrnode.priority = cur_nbrnode.distance + Math.sqrt(Math.pow(q_goal[0] - cur_nbrnode.x, 2) + Math.pow(q_goal[1] - cur_nbrnode.y, 2));
+                         enqueue(visit_queue,cur_nbrnode);
+
+                }
+
+                   
+            }
+            
+        }
+    }
+    return "iterating";
 
 
     // STENCIL: implement a single iteration of a graph search algorithm
@@ -290,6 +424,8 @@ function iterateGraphSearch() {
     //   testCollision - returns whether a given configuration is in collision
     //   drawHighlightedPathGraph - draws a path back to the start location
     //   draw_2D_configuration - draws a square at a given location 
+
+
 }
 
 
@@ -430,9 +566,22 @@ function initSearchGraph() {
 
             // STENCIL: determine whether this graph node should be the start
             //   point for the search
-                visit_queue = [];
         }
     }
+        i_init = q_init[0]*10+20
+        j_init = q_init[1]*10+20
+        node_init = G[i_init][j_init];
+        node_init.i = i_init;
+        node_init.j = j_init;
+        node_init.x = q_init[0];
+        node_init.y = q_init[1];
+        node_init.distance = 0;
+        node_init.visited = true;
+        node_init.priority = Math.sqrt(Math.pow(q_goal[0] - q_init[0], 2) + Math.pow(q_goal[1] - q_init[1], 2));
+
+        //G[0][0] = q_init 
+
+        visit_queue.push(node_init);
 }
 
 function setPlanningScene() {
