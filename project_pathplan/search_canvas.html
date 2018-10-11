@@ -568,8 +568,8 @@ function initSearchGraph() {
             //   point for the search
         }
     }
-        i_init = q_init[0]*10+20
-        j_init = q_init[1]*10+20
+        i_init = q_init[0]/eps+2/eps;
+        j_init = q_init[1]/eps+2/eps;
         node_init = G[i_init][j_init];
         node_init.i = i_init;
         node_init.j = j_init;
