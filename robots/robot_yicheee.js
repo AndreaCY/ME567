@@ -18,7 +18,6 @@ robot.origin = {xyz: [0,0,0], rpy:[0,0,0]};
 // specify base link of the robot; robot.origin is transform of world to the robot base
 robot.base = "base";  
 
-        
 // specify and create data objects for the links of the robot
 robot.links = {
     "base": {},  
