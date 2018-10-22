@@ -3,9 +3,9 @@
 
     KinEval | Kinematic Evaluator | collision detection
 
-    Implementation of robot kinematics, control, decision making, and dynamics 
+    Implementation of robot kinematics, control, decision making, and dynamics
         in HTML5/JavaScript and threejs
-     
+
     @author ohseejay / https://github.com/ohseejay / https://bitbucket.org/ohseejay
 
     Chad Jenkins
@@ -20,7 +20,7 @@
 // KE: make FK for a configuration and independent of current robot state
 
 kineval.robotIsCollision = function robot_iscollision() {
-    // test whether geometry of current configuration of robot is in collision with planning world 
+    // test whether geometry of current configuration of robot is in collision with planning world
 
     // form configuration from base location and joint angles
     var q_robot_config = [
@@ -47,7 +47,7 @@ kineval.robotIsCollision = function robot_iscollision() {
 
 
 kineval.poseIsCollision = function robot_collision_test(q) {
-    // perform collision test of robot geometry against planning world 
+    // perform collision test of robot geometry against planning world
 
     // test base origin (not extents) against world boundary extents
     if ((q[0]<robot_boundary[0][0])||(q[0]>robot_boundary[1][0])||(q[2]<robot_boundary[0][2])||(q[2]>robot_boundary[1][2]))
@@ -55,8 +55,21 @@ kineval.poseIsCollision = function robot_collision_test(q) {
 
     // traverse robot kinematics to test each body for collision
     // STENCIL: implement forward kinematics for collision detection
-    //return robot_collision_forward_kinematics(q);
+    return robot_collision_forward_kinematics(q);
 
+}
+
+function robot_collision_forward_kinematics(q)
+{
+    // test for collisions along each link
+    var R = matrix_multiply(matrix_multiply(generate_rotation_matrix_Z(q[5]),generate_rotation_matrix_Y(q[4])),generate_rotation_matrix_X(q[3]));
+    var D = generate_translation_matrix(q[0], q[1], q[2]);
+    var mstack = matrix_multiply(D,R);
+    if (robot.links_geom_imported) {
+        var offset_xform = matrix_multiply(generate_rotation_matrix_Y(-Math.PI/2),generate_rotation_matrix_X(-Math.PI/2));
+        mstack = matrix_multiply(mstack, offset_xform);
+    }
+    return traverse_collision_forward_kinematics_link(robot.links[robot.base], mstack, q);
 }
 
 
@@ -66,12 +79,12 @@ function traverse_collision_forward_kinematics_link(link,mstack,q) {
     /* test collision FK
     console.log(link);
     */
-    if (typeof link.visual !== 'undefined') {
-        var local_link_xform = matrix_multiply(mstack,generate_translation_matrix(link.visual.origin.xyz[0],link.visual.origin.xyz[1],link.visual.origin.xyz[2]));
-    }
-    else {
-        var local_link_xform = matrix_multiply(mstack,generate_identity());
-    }
+    // if (typeof link.visual !== 'undefined') {
+    //     var local_link_xform = matrix_multiply(mstack,generate_translation_matrix(link.visual.origin.xyz[0],link.visual.origin.xyz[1],link.visual.origin.xyz[2]));
+    // }
+    // else {
+    //     var local_link_xform = matrix_multiply(mstack,generate_identity());
+    // }
 
     // test collision by transforming obstacles in world to link space
 /*
@@ -83,13 +96,13 @@ function traverse_collision_forward_kinematics_link(link,mstack,q) {
     var j;
 
     // test each obstacle against link bbox geometry by transforming obstacle into link frame and testing against axis aligned bounding box
-    //for (j=0;j<robot_obstacles.length;j++) { 
-    for (j in robot_obstacles) { 
+    //for (j=0;j<robot_obstacles.length;j++) {
+    for (j in robot_obstacles) {
 
         var obstacle_local = matrix_multiply(mstack_inv,robot_obstacles[j].location);
 
         // assume link is in collision as default
-        var in_collision = true; 
+        var in_collision = true;
 
         // if obstacle lies outside the link extents along any dimension, no collision is detected
         if (
@@ -105,7 +118,7 @@ function traverse_collision_forward_kinematics_link(link,mstack,q) {
         )
                 in_collision = false;
         if (
-            (obstacle_local[2][0]<(link.bbox.min.z-robot_obstacles[j].radius)) 
+            (obstacle_local[2][0]<(link.bbox.min.z-robot_obstacles[j].radius))
             ||
             (obstacle_local[2][0]>(link.bbox.max.z+robot_obstacles[j].radius))
         )
@@ -127,9 +140,30 @@ function traverse_collision_forward_kinematics_link(link,mstack,q) {
         }
     }
 
-    // return false, when no collision detected for this link and children 
+    // return false, when no collision detected for this link and children
     return false;
 }
 
-
+function traverse_collision_forward_kinematics_joint(joint,mstack,q){
+    var R = matrix_multiply(matrix_multiply(generate_rotation_matrix_Z(joint.origin.rpy[2]),generate_rotation_matrix_Y(joint.origin.rpy[1])),generate_rotation_matrix_X(joint.origin.rpy[0]));
+    var D = generate_translation_matrix(joint.origin.xyz[0], joint.origin.xyz[1], joint.origin.xyz[2]);
+    var R_qn;
+    var angle = q[q_names[joint.name]];
+    if (robot.links_geom_imported){
+        if (joint.type === "revolute" ||  joint.type === "continuous"){
+            R_qn = quaternion_to_rotation_matrix(quaternion_normalize(quaternion_from_axisangle(angle,joint.axis)));
+        }
+        else if (joint.type === "prismatic"){
+            R_qn = generate_translation_matrix(angle*joint.axis[0],angle*joint.axis[1],angle*joint.axis[2]);
+        }
+        else{
+            R_qn = generate_identity(4);
+        }
+    }
+    else{
+        R_qn = quaternion_to_rotation_matrix(quaternion_normalize(quaternion_from_axisangle(angle,joint.axis)));
+    }
+    mstack = matrix_multiply(matrix_multiply(mstack,matrix_multiply(D,R)), R_qn);
+    return traverse_collision_forward_kinematics_link(robot.links[joint.child],mstack,q);
+}
 

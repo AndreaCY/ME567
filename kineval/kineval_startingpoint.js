@@ -371,50 +371,64 @@ kineval.startingPlaceholderUserInput = function startingPlaceholderUserInput() {
     if (keyboard.pressed("shift+x")) {
         textbar.innerHTML = "come on down";  // make the objects move down
     // STENCIL: update the vertical offset variable
+        offsetVertical -= 0.05;
     }
     else if (keyboard.pressed("x")) {
         textbar.innerHTML = "moving on up";  // make the objects move up
     // STENCIL: update the vertical offset variable
+        offsetVertical += 0.05;
     }
     else if (keyboard.pressed("shift+z")) {
         // increase the jittering of the objects
         textbar.innerHTML = "its time for the percolator";  
     // STENCIL: update the radius of the jittering
+        jitterRadius += 0.005;
     }
     else if (keyboard.pressed("z")) {
         // decrease the jittering of the objects
         textbar.innerHTML = "relax your mind, let your conscience be free";  
     // STENCIL: update the radius of the jittering
+        jitterRadius -= 0.005;
+        jitterRadius = jitterRadius > 0 ? jitterRadius : 0; // it should stop when lower than 0
     }
     else if (keyboard.pressed("shift+1")) { 
         // increase spacing along the x-axis between the objects
         textbar.innerHTML = "sail away"; 
     // STENCIL: update the global spacing variable
+        spacingGlobal += 0.01;
     }
     else if (keyboard.pressed("1")) {
         // decrease spacing along the x-axis between the objects
         textbar.innerHTML = "come together"; 
     // STENCIL: update the global spacing variable
+        spacingGlobal -= 0.01;
+        spacingGlobal = spacingGlobal > 0 ? spacingGlobal : 0; // it should stop when lower than 0
     }
     else if (keyboard.pressed("shift+2")) { 
         // increase the amplitude of the animating sine wave
         textbar.innerHTML = "ain't no mountain high enough"; 
     // STENCIL: update the wave amplitude variable
+        waveAmplitude += 0.05;
     }
     else if (keyboard.pressed("2")) {
         // decrease the amplitude of the animating sine wave
         textbar.innerHTML = "got 'til it's gone"; 
     // STENCIL: update the wave amplitude variable
+        waveAmplitude -= 0.05;
+        waveAmplitude = waveAmplitude > 0 ? waveAmplitude : 0; // it should stop when lower than 0
     }
     else if (keyboard.pressed("shift+3")) { 
         // increase the frequency of the animating sine wave
         textbar.innerHTML = "good vibrations"; 
     // STENCIL: update the global spacing variable
+        waveFrequency += 0.01;
     }
     else if (keyboard.pressed("3")) {
         // decrease the frequency of the animating sine wave
         textbar.innerHTML = "friends in low(er) places"; 
     // STENCIL: update the global spacing variable
+        waveFrequency -= 0.01;
+        waveFrequency = waveFrequency > 0 ? waveFrequency : 0; // it should stop when lower than 0
     }
     else {
         // STENCIL: say something more interesting in the textbar element
