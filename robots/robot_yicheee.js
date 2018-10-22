@@ -110,4 +110,3 @@ links_geom["hand_right"].applyMatrix( new THREE.Matrix4().makeTranslation(0, 0.1
 
 links_geom["brain"] = new THREE.CubeGeometry( 0.3, 0.4, 0.5 );
 links_geom["brain"].applyMatrix( new THREE.Matrix4().makeTranslation(0, -0.2, 0) );
-
