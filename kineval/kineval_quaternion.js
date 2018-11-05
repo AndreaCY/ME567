@@ -8,29 +8,29 @@
     //   quaternion_to_rotation_matrix
     //   quaternion_multiply
 
-// returns a vector that is the quaternion from axisangle
-function quaternion_from_axisangle(theta, axis_normlized) {
-    return [Math.cos(theta/2), Math.sin(theta/2)*axis_normlized[0], Math.sin(theta/2)*axis_normlized[1], Math.sin(theta/2)*axis_normlized[2]];
+function quaternion_from_axisangle(theta, axis_normal) {
+    var quaternion_f_a = [Math.cos(0.5*theta), Math.sin(0.5*theta)*axis_normal[0], 
+                        Math.sin(0.5*theta)*axis_normal[1], Math.sin(0.5*theta)*axis_normal[2]];
+    return quaternion_f_a;
 }
 
-// returns a vector that is the normalization of quaternion
-function quaternion_normalize(q) {
-    var norm = Math.sqrt(Math.pow(q[0],2)+Math.pow(q[1],2)+Math.pow(q[2],2)+Math.pow(q[3],2));
-    return [q[0]/norm, q[1]/norm, q[2]/norm, q[3]/norm];
-
+function quaternion_normalize(a) {
+    var normal = Math.sqrt(Math.pow(a[0],2) + Math.pow(a[1],2) + Math.pow(a[2],2) + Math.pow(a[3],2));
+    var qua_normal = [a[0]/normal, a[1]/normal, a[2]/normal, a[3]/normal];
+    return qua_normal;
 }
 
-// returns a rotation matrix transferred from quaternion
-function quaternion_to_rotation_matrix(q) {
-    return [
-        [1-2*(Math.pow(q[2],2)+Math.pow(q[3],2)), 2*(q[1]*q[2]-q[0]*q[3]), 2*(q[0]*q[2]+q[1]*q[3]),0],
-        [2*(q[1]*q[2]+q[0]*q[3]), 1-2*(Math.pow(q[1],2)+Math.pow(q[3],2)), 2*(q[2]*q[3]-q[0]*q[1]),0],
-        [2*(q[1]*q[3]-q[0]*q[2]), 2*(q[0]*q[1]+q[2]*q[3]), 1-2*(Math.pow(q[1],2)+Math.pow(q[2],2)),0],
-        [0,0,0,1]
-    ];
+function quaternion_to_rotation_matrix(a) {
+    var qua_t_m = [[1-2*(Math.pow(a[2],2) + Math.pow(a[3],2)), 2*(a[1]*a[2] - a[0]*a[3]), 2*(a[0]*a[2] + a[1]*a[3]),0],
+                    [2*(a[1]*a[2] + a[0]*a[3]), 1 - 2*(Math.pow(a[1],2) + Math.pow(a[3],2)), 2*(a[2]*a[3] - a[0]*a[1]),0],
+                    [2*(a[1]*a[3] - a[0]*a[2]), 2*(a[0]*a[1] + a[2]*a[3]), 1 - 2*(Math.pow(a[1],2) + Math.pow(a[2],2)),0], [0,0,0,1]];
+    return qua_t_m;
 }
 
-// returns a vector that is the multiplication of two quaternions
-function quaternion_multiply(q1,q2) {
-    return [q1[0]*q2[0]-q1[1]*q2[1]-q1[2]*q2[2]-q1[3]*q2[3], q1[0]*q2[1]+q1[1]*q2[0]+q1[2]*q2[3]-q1[3]*q2[2], q1[0]*q2[2]-q1[1]*q2[3]+q1[2]*q2[0]+q1[3]*q2[1], q1[0]*q2[3]+q1[1]*q2[2]-q1[2]*q2[1]+q1[3]*q2[0]];
+function quaternion_multiply(a,b) {
+    var qua_multi = [a[0]*b[0] - a[1]*b[1] - a[2]*b[2] - a[3]*b[3], 
+                    a[0]*b[1] + a[1]*b[0] + a[2]*b[3] - a[3]*b[2], 
+                    a[0]*b[2] - a[1]*b[3] + a[2]*b[0] + a[3]*b[1], 
+                    a[0]*b[3] + a[1]*b[2] - a[2]*b[1] + a[3]*b[0]];
+    return qua_multi;
 }

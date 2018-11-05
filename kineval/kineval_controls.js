@@ -38,7 +38,7 @@ kineval.applyControls = function robot_apply_controls(curRobot) {
             switch (robot.joints[x].type) {
                 case "revolute":
                 case "prismatic":
-                    if (robot.joints[x].angle > robot.joints[x].limit.upper){
+                    if (robot.joints[x].limit.upper < robot.joints[x].angle){
                         robot.joints[x].angle = robot.joints[x].limit.upper;
                     }
                     if (robot.joints[x].angle < robot.joints[x].limit.lower){
@@ -49,18 +49,17 @@ kineval.applyControls = function robot_apply_controls(curRobot) {
                     robot.joints[x].angle = 0;
                     break;
                 case "continuous":
+                    break;
                 default:
                     break;
             }
         }
 
-
-
         // clear controls back to zero for next timestep
         curRobot.joints[x].control = 0;
     }
 
-//console.log(curRobot); 
+    //console.log(curRobot); 
     // base motion
     curRobot.origin.xyz[0] += curRobot.control.xyz[0];
     curRobot.origin.xyz[1] += curRobot.control.xyz[1];
@@ -77,4 +76,3 @@ kineval.applyControls = function robot_apply_controls(curRobot) {
     // zero controls now that they have been applied to robot
     curRobot.control = {xyz: [0,0,0], rpy:[0,0,0]}; 
 }
-

@@ -22,44 +22,43 @@ kineval.setpointDanceSequence = function execute_setpoints() {
     if (!kineval.params.update_pd_dance) return; 
 
     // STENCIL: implement FSM to cycle through dance pose setpoints
+
     if (!kineval.params.update_pd_clock){
-        var curdate = new Date();
-        if (curdate.getSeconds() > lastseconds.getSeconds()){
+        var current_date = new Date();
+
+        if (lastseconds.getSeconds() < current_date.getSeconds()){
             kineval.params.dance_pose_index = kineval.params.dance_sequence_index.shift();
+            // change all joints
             for (x in robot.joints) {
                 kineval.params.setpoint_target[x] = kineval.setpoints[kineval.params.dance_pose_index][x];
             }
+
             kineval.params.dance_sequence_index.push(kineval.params.dance_pose_index);
         }
-        lastseconds = curdate;
+        // set the latest as current for new turn
+        lastseconds = current_date;
     }
-
 }
 
 kineval.setpointClockMovement = function execute_clock() {
+    // if update not requested, exit routine 
+    if (!kineval.params.update_pd_clock) return;
 
-    // if update not requested, exit routine
-    if (!kineval.params.update_pd_clock) return; 
-
-    var curdate = new Date();
+    var current_date = new Date();
     for (x in robot.joints) {
-        kineval.params.setpoint_target[x] = curdate.getSeconds()/60*2*Math.PI;
+        kineval.params.setpoint_target[x] = current_date.getSeconds()/(60*2*Math.PI);
     }
 }
 
 
 kineval.robotArmControllerSetpoint = function robot_pd_control () {
-
-    // if update not requested, exit routine
-    if ((!kineval.params.update_pd)&&(!kineval.params.persist_pd)) return; 
+    // if update not requested, exit routine 
+    if ((!kineval.params.update_pd)&&(!kineval.params.persist_pd)) return;
 
     kineval.params.update_pd = false; // if update requested, clear request and process setpoint control
 
     // STENCIL: implement P servo controller over joints
     for (x in robot.joints) {
-        robot.joints[x].control = robot.joints[x].servo.p_gain*(kineval.params.setpoint_target[x] - robot.joints[x].angle);
+        robot.joints[x].control = (kineval.params.setpoint_target[x] - robot.joints[x].angle)*robot.joints[x].servo.p_gain;
     }
-
 }
-
-
