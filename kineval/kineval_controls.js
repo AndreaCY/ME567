@@ -34,7 +34,7 @@ kineval.applyControls = function robot_apply_controls(curRobot) {
         }
 
     // STENCIL: enforce joint limits for prismatic and revolute joints
-    // switch using : stop while finally meet break in the following cases
+    // switch : if there is no break in case, stop while finally meet break in the following cases
         if (robot.links_geom_imported) {
             switch (robot.joints[x].type) {
                 case "revolute":
