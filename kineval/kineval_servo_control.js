@@ -22,7 +22,6 @@ kineval.setpointDanceSequence = function execute_setpoints() {
     if (!kineval.params.update_pd_dance) return; 
 
     // STENCIL: implement FSM to cycle through dance pose setpoints
-
     if (!kineval.params.update_pd_clock){
         var current_date = new Date();
 
