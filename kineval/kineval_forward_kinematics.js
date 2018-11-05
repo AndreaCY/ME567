@@ -40,7 +40,6 @@ kineval.robotForwardKinematics = function robotForwardKinematics () {
     //
     // if geometries are imported and using ROS coordinates (e.g., fetch),
     //   coordinate conversion is needed for kineval/threejs coordinates:
-    //
 
 kineval.buildFKTransforms = function buildFKTransforms () {
     traverseFKBase();
