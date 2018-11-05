@@ -9,8 +9,8 @@
     //   quaternion_multiply
 
 function quaternion_from_axisangle(theta, axis_normal) {
-    var quaternion_f_a = [Math.cos(0.5*theta), Math.sin(0.5*theta)*axis_normal[0], 
-                        Math.sin(0.5*theta)*axis_normal[1], Math.sin(0.5*theta)*axis_normal[2]];
+    var quaternion_f_a = [Math.cos(theta/2), Math.sin(theta/2)*axis_normal[0], 
+                        Math.sin(theta/2)*axis_normal[1], Math.sin(theta/2)*axis_normal[2]];
     return quaternion_f_a;
 }
 
