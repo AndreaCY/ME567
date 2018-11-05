@@ -61,7 +61,7 @@ function traverseFKBase() {
     robot_heading = matrix_multiply(robot.links[robot.base].xform,l_head_Z);
 
     if (robot.links_geom_imported) {
-        var mis_xform = matrix_multiply(generate_rotation_matrix_Y(-0.5*Math.PI),generate_rotation_matrix_X(-0.5*Math.PI));
+        var mis_xform = matrix_multiply(generate_rotation_matrix_Y((-0.5)*Math.PI),generate_rotation_matrix_X((-0.5)*Math.PI));
         robot.links[robot.base].xform = matrix_multiply(robot.links[robot.base].xform, mis_xform);
     }
 }
@@ -69,7 +69,7 @@ function traverseFKBase() {
 function traverseFKLink(l) {
     var a;
     robot.links[l].xform = robot.joints[robot.links[l].parent].xform;
-    if (typeof robot.links[l].children == 'undefined'){
+    if (typeof robot.links[l].children === 'undefined'){
         return;
     }
 
@@ -83,10 +83,10 @@ function traverseFKJoint(j) {
     var B = generate_translation_matrix(robot.joints[j].origin.xyz[0], robot.joints[j].origin.xyz[1], robot.joints[j].origin.xyz[2]);
     var A_q;
     if (robot.links_geom_imported){
-        if (robot.joints[j].type == "revolute" || robot.joints[j].type == "continuous"){
+        if (robot.joints[j].type === "revolute" || robot.joints[j].type === "continuous"){
             A_q = quaternion_to_rotation_matrix(quaternion_normalize(quaternion_from_axisangle(robot.joints[j].angle,robot.joints[j].axis)));
         }
-        else if (robot.joints[j].type == "prismatic"){
+        else if (robot.joints[j].type === "prismatic"){
             A_q = generate_translation_matrix(robot.joints[j].angle*robot.joints[j].axis[0],robot.joints[j].angle*robot.joints[j].axis[1],robot.joints[j].angle*robot.joints[j].axis[2]);
         }
         else{A_q = generate_identity(4);}
