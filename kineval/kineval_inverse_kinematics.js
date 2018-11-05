@@ -38,6 +38,12 @@ kineval.randomizeIKtrial = function randomIKtrial () {
     kineval.params.trial_ik_random.time = cur_time.getTime()-kineval.params.trial_ik_random.start.getTime();
 
     // STENCIL: see instructor for random time trial code
+    endeffector_world = matrix_multiply(robot.joints[robot.endeffector.frame].xform,robot.endeffector.position);
+
+    kineval.params.trial_ik_random.distance_current = Math.sqrt(
+        Math.pow(kineval.params.ik_target.position[0][0]-endeffector_world[0][0],2.0)
+        + Math.pow(kineval.params.ik_target.position[1][0]-endeffector_world[1][0],2.0)
+        + Math.pow(kineval.params.ik_target.position[2][0]-endeffector_world[2][0],2.0) );
 }
 
 kineval.iterateIK = function iterate_inverse_kinematics(endeffector_target_world, endeffector_joint, endeffector_position_local) {
