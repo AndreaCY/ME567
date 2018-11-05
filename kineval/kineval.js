@@ -307,7 +307,92 @@ kineval.initParameters = function initParameters() {
         kineval.setpoints = 
             [{"torso_lift_joint":0,"shoulder_pan_joint":0,"shoulder_lift_joint":0,"upperarm_roll_joint":0,"elbow_flex_joint":0,"forearm_roll_joint":0,"wrist_flex_joint":0,"wrist_roll_joint":0,"gripper_axis":0,"head_pan_joint":0,"head_tilt_joint":0,"torso_fixed_joint":0,"r_wheel_joint":0,"l_wheel_joint":0,"r_gripper_finger_joint":0.04,"l_gripper_finger_joint":0.04,"bellows_joint":0,"bellows_joint2":0,"estop_joint":0,"laser_joint":0},{"torso_lift_joint":0.4,"shoulder_pan_joint":1.6056,"shoulder_lift_joint":-0.7112110832854187,"upperarm_roll_joint":-0.5224344562407175,"elbow_flex_joint":-0.2596467353995974,"forearm_roll_joint":0.027744058428229964,"wrist_flex_joint":-0.011999677661943124,"wrist_roll_joint":0.00012972717196553372,"gripper_axis":0.0001297271719655264,"head_pan_joint":0.00005720356139027753,"head_tilt_joint":0.00005283131465981046,"torso_fixed_joint":0.00012972717196555266,"r_wheel_joint":0,"l_wheel_joint":0,"r_gripper_finger_joint":0,"l_gripper_finger_joint":0,"bellows_joint":0,"bellows_joint2":0,"estop_joint":0,"laser_joint":0},{"torso_lift_joint":0.4,"shoulder_pan_joint":0.34460326176810346,"shoulder_lift_joint":0.9958007666048422,"upperarm_roll_joint":-1.3788601366395654,"elbow_flex_joint":0.8938364230947411,"forearm_roll_joint":-0.10797832064349865,"wrist_flex_joint":0.6820807432085109,"wrist_roll_joint":0.0001297271719655064,"gripper_axis":0.00012972717196552277,"head_pan_joint":0.00005720356139027753,"head_tilt_joint":0.00005283131465981046,"torso_fixed_joint":0.00012972717196555266,"r_wheel_joint":0,"l_wheel_joint":0,"r_gripper_finger_joint":0.04,"l_gripper_finger_joint":0.04,"bellows_joint":0,"bellows_joint2":0,"estop_joint":0,"laser_joint":0},{"torso_lift_joint":0.4,"shoulder_pan_joint":0.0004677854383942246,"shoulder_lift_joint":-1.221,"upperarm_roll_joint":-0.00037940857494373875,"elbow_flex_joint":0.00024155542149740568,"forearm_roll_joint":0.00001232914385335755,"wrist_flex_joint":0.00040145426866142973,"wrist_roll_joint":4.319780384106989e-8,"gripper_axis":4.319780384107232e-8,"head_pan_joint":1.904819311566239e-8,"head_tilt_joint":1.759228026605762e-8,"torso_fixed_joint":4.319780384108353e-8,"r_wheel_joint":0,"l_wheel_joint":0,"r_gripper_finger_joint":0,"l_gripper_finger_joint":0,"bellows_joint":0,"bellows_joint2":0,"estop_joint":0,"laser_joint":0},{"torso_lift_joint":0,"shoulder_pan_joint":0,"shoulder_lift_joint":0,"upperarm_roll_joint":0,"elbow_flex_joint":0,"forearm_roll_joint":0,"wrist_flex_joint":0,"wrist_roll_joint":0,"gripper_axis":0,"head_pan_joint":0,"head_tilt_joint":0,"torso_fixed_joint":0,"r_wheel_joint":0,"l_wheel_joint":0,"r_gripper_finger_joint":0.04,"l_gripper_finger_joint":0.04,"bellows_joint":0,"bellows_joint2":0,"estop_joint":0,"laser_joint":0},{"torso_lift_joint":0,"shoulder_pan_joint":0,"shoulder_lift_joint":0,"upperarm_roll_joint":0,"elbow_flex_joint":0,"forearm_roll_joint":0,"wrist_flex_joint":0,"wrist_roll_joint":0,"gripper_axis":0,"head_pan_joint":0,"head_tilt_joint":0,"torso_fixed_joint":0,"r_wheel_joint":0,"l_wheel_joint":0,"r_gripper_finger_joint":0,"l_gripper_finger_joint":0,"bellows_joint":0,"bellows_joint2":0,"estop_joint":0,"laser_joint":0},{"torso_lift_joint":0,"shoulder_pan_joint":0,"shoulder_lift_joint":0,"upperarm_roll_joint":0,"elbow_flex_joint":0,"forearm_roll_joint":0,"wrist_flex_joint":0,"wrist_roll_joint":0,"gripper_axis":0,"head_pan_joint":0,"head_tilt_joint":0,"torso_fixed_joint":0,"r_wheel_joint":0,"l_wheel_joint":0,"r_gripper_finger_joint":0.04,"l_gripper_finger_joint":0.04,"bellows_joint":0,"bellows_joint2":0,"estop_joint":0,"laser_joint":0},{"torso_lift_joint":0,"shoulder_pan_joint":0,"shoulder_lift_joint":0,"upperarm_roll_joint":0,"elbow_flex_joint":0,"forearm_roll_joint":0,"wrist_flex_joint":0,"wrist_roll_joint":0,"gripper_axis":0,"head_pan_joint":0,"head_tilt_joint":0,"torso_fixed_joint":0,"r_wheel_joint":0,"l_wheel_joint":0,"r_gripper_finger_joint":0,"l_gripper_finger_joint":0,"bellows_joint":0,"bellows_joint2":0,"estop_joint":0,"laser_joint":0},{"torso_lift_joint":0,"shoulder_pan_joint":0,"shoulder_lift_joint":0,"upperarm_roll_joint":0,"elbow_flex_joint":0,"forearm_roll_joint":0,"wrist_flex_joint":0,"wrist_roll_joint":0,"gripper_axis":0,"head_pan_joint":0,"head_tilt_joint":0,"torso_fixed_joint":0,"r_wheel_joint":0,"l_wheel_joint":0,"r_gripper_finger_joint":0.04,"l_gripper_finger_joint":0.04,"bellows_joint":0,"bellows_joint2":0,"estop_joint":0,"laser_joint":0},{"torso_lift_joint":0,"shoulder_pan_joint":0,"shoulder_lift_joint":0,"upperarm_roll_joint":0,"elbow_flex_joint":0,"forearm_roll_joint":0,"wrist_flex_joint":0,"wrist_roll_joint":0,"gripper_axis":0,"head_pan_joint":0,"head_tilt_joint":0,"torso_fixed_joint":0,"r_wheel_joint":0,"l_wheel_joint":0,"r_gripper_finger_joint":0,"l_gripper_finger_joint":0,"bellows_joint":0,"bellows_joint2":0,"estop_joint":0,"laser_joint":0}];
     }
-
+    if (robot.name === 'baxter'){
+        kineval.params.dance_sequence_index = [0,1,2,3,4,5,6,7]
+        kineval.setpoints = [
+        //0
+        {
+            "left_s0":0,"left_s1":0,
+            "left_e0":0,"left_e1":1,
+            "left_w0":0,"left_w1":0,"left_w2":0,
+            "headnod":0, "headpan":-1,
+            "right_s0":0,"right_s1":0,
+            "right_e0":0,"right_e1":0,
+            "right_w0":0,"right_w1":0,"right_w2":0,           
+        },
+        //1
+        {
+            "left_s0":0,"left_s1":0,
+            "left_e0":0,"left_e1":0,
+            "left_w0":0,"left_w1":0,"left_w2":0,
+            "headnod":0, "headpan":0,
+            "right_s0":0,"right_s1":0,
+            "right_e0":0,"right_e1":0,
+            "right_w0":0,"right_w1":0,"right_w2":0,              
+        },
+        //2
+        {
+            "left_s0":0,"left_s1":0,
+            "left_e0":0,"left_e1":0,
+            "left_w0":0,"left_w1":0,"left_w2":0,
+            "headnod":0, "headpan":-1,
+            "right_s0":0,"right_s1":0,
+            "right_e0":0,"right_e1":1,
+            "right_w0":0,"right_w1":0,"right_w2":0,   
+        },
+        //3
+        {
+            "left_s0":0,"left_s1":0,
+            "left_e0":0,"left_e1":0,
+            "left_w0":0,"left_w1":0,"left_w2":0,
+            "headnod":0, "headpan":0,
+            "right_s0":0,"right_s1":0,
+            "right_e0":0,"right_e1":0,
+            "right_w0":0,"right_w1":0,"right_w2":0,   
+        },
+        //4
+        {
+            "left_s0":2,"left_s1":1,
+            "left_e0":0,"left_e1":0,
+            "left_w0":0,"left_w1":0,"left_w2":0,
+            "headnod":0, "headpan":0,
+            "right_s0":2,"right_s1":1,
+            "right_e0":0,"right_e1":0,
+            "right_w0":0,"right_w1":0,"right_w2":0,   
+        },
+        //5
+        {
+            "left_s0":0,"left_s1":0,
+            "left_e0":0,"left_e1":0,
+            "left_w0":0,"left_w1":0,"left_w2":0,
+            "headnod":0, "headpan":0,
+            "right_s0":0,"right_s1":0,
+            "right_e0":0,"right_e1":0,
+            "right_w0":0,"right_w1":0,"right_w2":0,   
+        },
+        //6
+        {
+            "left_s0":0,"left_s1":0,
+            "left_e0":0,"left_e1":0,
+            "left_w0":2,"left_w1":0,"left_w2":0,
+            "headnod":0, "headpan":0,
+            "right_s0":0,"right_s1":0,
+            "right_e0":0,"right_e1":0,
+            "right_w0":2,"right_w1":0,"right_w2":0,   
+        },
+        //7
+                {
+            "left_s0":0,"left_s1":0,
+            "left_e0":0,"left_e1":0,
+            "left_w0":0,"left_w1":0,"left_w2":0,
+            "headnod":0, "headpan":0,
+            "right_s0":0,"right_s1":0,
+            "right_e0":0,"right_e1":0,
+            "right_w0":0,"right_w1":0,"right_w2":0,   
+        }        
+        ];
+    }
+    
     // initialize inverse kinematics target location 
     // KE 3 : ik_target param is redundant as an argument into inverseKinematics 
     kineval.params.ik_target = {};
