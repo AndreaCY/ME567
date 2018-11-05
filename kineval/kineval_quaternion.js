@@ -9,8 +9,10 @@
     //   quaternion_multiply
 
 function quaternion_from_axisangle(theta, axis_normal) {
-    var quaternion_f_a = [Math.cos(theta/2), Math.sin(theta/2)*axis_normal[0], 
-                        Math.sin(theta/2)*axis_normal[1], Math.sin(theta/2)*axis_normal[2]];
+    var quaternion_f_a = [Math.cos(theta/2), 
+                          Math.sin(theta/2)*axis_normal[0], 
+                          Math.sin(theta/2)*axis_normal[1], 
+                          Math.sin(theta/2)*axis_normal[2]];
     return quaternion_f_a;
 }
 
@@ -22,8 +24,9 @@ function quaternion_normalize(a) {
 
 function quaternion_to_rotation_matrix(a) {
     var qua_t_m = [[1-2*(Math.pow(a[2],2) + Math.pow(a[3],2)), 2*(a[1]*a[2] - a[0]*a[3]), 2*(a[0]*a[2] + a[1]*a[3]),0],
-                    [2*(a[1]*a[2] + a[0]*a[3]), 1 - 2*(Math.pow(a[1],2) + Math.pow(a[3],2)), 2*(a[2]*a[3] - a[0]*a[1]),0],
-                    [2*(a[1]*a[3] - a[0]*a[2]), 2*(a[0]*a[1] + a[2]*a[3]), 1 - 2*(Math.pow(a[1],2) + Math.pow(a[2],2)),0], [0,0,0,1]];
+                   [2*(a[1]*a[2] + a[0]*a[3]), 1 - 2*(Math.pow(a[1],2) + Math.pow(a[3],2)), 2*(a[2]*a[3] - a[0]*a[1]),0],
+                   [2*(a[1]*a[3] - a[0]*a[2]), 2*(a[0]*a[1] + a[2]*a[3]), 1 - 2*(Math.pow(a[1],2) + Math.pow(a[2],2)),0], 
+                   [0,0,0,1]];
     return qua_t_m;
 }
 
