@@ -313,9 +313,9 @@ kineval.initParameters = function initParameters() {
         //0
         {
             "left_s0":0,"left_s1":0,
-            "left_e0":0,"left_e1":1,
+            "left_e0":0,"left_e1":0.5,
             "left_w0":0,"left_w1":0,"left_w2":0,
-            "headnod":0, "headpan":-1,
+            "headnod":0, "headpan":-0.5,
             "right_s0":0,"right_s1":0,
             "right_e0":0,"right_e1":0,
             "right_w0":0,"right_w1":0,"right_w2":0,           
@@ -335,9 +335,9 @@ kineval.initParameters = function initParameters() {
             "left_s0":0,"left_s1":0,
             "left_e0":0,"left_e1":0,
             "left_w0":0,"left_w1":0,"left_w2":0,
-            "headnod":0, "headpan":-1,
+            "headnod":0, "headpan":-0.5,
             "right_s0":0,"right_s1":0,
-            "right_e0":0,"right_e1":1,
+            "right_e0":0,"right_e1":0.5,
             "right_w0":0,"right_w1":0,"right_w2":0,   
         },
         //3
@@ -352,11 +352,11 @@ kineval.initParameters = function initParameters() {
         },
         //4
         {
-            "left_s0":2,"left_s1":1,
+            "left_s0":2,"left_s1":0.5,
             "left_e0":0,"left_e1":0,
             "left_w0":0,"left_w1":0,"left_w2":0,
             "headnod":0, "headpan":0,
-            "right_s0":2,"right_s1":1,
+            "right_s0":2,"right_s1":0.5,
             "right_e0":0,"right_e1":0,
             "right_w0":0,"right_w1":0,"right_w2":0,   
         },
@@ -374,11 +374,11 @@ kineval.initParameters = function initParameters() {
         {
             "left_s0":0,"left_s1":0,
             "left_e0":0,"left_e1":0,
-            "left_w0":2,"left_w1":0,"left_w2":0,
+            "left_w0":0.5,"left_w1":0,"left_w2":0,
             "headnod":0, "headpan":0,
             "right_s0":0,"right_s1":0,
             "right_e0":0,"right_e1":0,
-            "right_w0":2,"right_w1":0,"right_w2":0,   
+            "right_w0":0.5,"right_w1":0,"right_w2":0,   
         },
         //7
                 {
