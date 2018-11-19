@@ -41,14 +41,14 @@ Assignment 4 feature 18 (2.00/2): FSMDance_BaseControl: CHECK
     comment: good work
 Assignment 4 feature 19 (0.00/2): FSMDance_SetpointControl: DUE
     error: servo controller does not properly follow clock desired signal
-Assignment 4 feature 20 (0.00/2): FSMDance_FSM: DUE
-    what?: undefined
+Assignment 4 feature 20 (2.00/2): FSMDance_FSM: CHECK
+    comment: good work
 Assignment 4 feature 21 (2.00/2): FSMDance_JointLimits: CHECK
     comment: good work
 Assignment 4 feature 22 (2.00/2): FSMDance_Prismatic: CHECK
     comment: good work
-Assignment 4 feature 23 (2.00/2): FSMDance_Rosbridge: CHECK
-    comment: good work
+Assignment 4 feature 23 (0.00/2): FSMDance_Rosbridge: PENDING
+    
 Assignment 5 feature 24 (0.00/6): IK_Jacobian: PENDING
     
 Assignment 5 feature 25 (0.00/3): IK_JTranspose: PENDING
