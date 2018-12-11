@@ -74,24 +74,30 @@ function initSearch() {
 
     // specify default search algorithm to use for planning
     // search_alg = "depth-first";  
-    search_alg = "breadth-first";  
+    //search_alg = "breadth-first";  
     // search_alg = "greedy-best-first";  
-    // search_alg = "A-star";  
+    //search_alg = "A-star";  
     //search_alg = "RRT";  
     //search_alg = "RRT-connect";  
-    //search_alg = "RRT-star";  
+    search_alg = "RRT-star";  
 
     // specify default the world for the planner 
     //  (stored as "range" global variable with name "planning_scene")
-    planning_scene = "empty";
-    // planning_scene = "misc";
-    //planning_scene = "narrow1";
+    //planning_scene = "empty";
+    //planning_scene = "misc";
+    planning_scene = "narrow1";
     //planning_scene = "narrow2";
     //planning_scene = "three_sections";
 
     // specify default eps (epsilon) spatial resolution variable
     //   for RRT, specifies threshold radius for step size and reaching goal
     eps = 0.1;
+    // add the parameter for RRT/RRT connect/RRT star
+    stepsize = 0.1;
+    threshold_for_goal = 0.2;
+    radius_rrt = stepsize * 2;
+    T_a_flag = true; // shows connect to configuration
+
 
     // create event handlers for the mouse
     canvas = document.getElementById("myCanvas");
@@ -273,6 +279,16 @@ function animate() {
     requestAnimationFrame( animate );
 }
 
+//////////////////////////////////////////////////
+/////     MIN HEAP IMPLEMENTATION FUNCTIONS
+//////////////////////////////////////////////////
+
+    // STENCIL: implement min heap functions for graph search priority queue.
+    //   These functions work use the 'priority' field for elements in graph.
+
+
+
+
 function dequeue(heap) //heap.priority
 {
   var PrintE;
@@ -431,6 +447,31 @@ function iterateGraphSearch() {
 
 function iterateRRT() {
 
+    if (search_max_iterations < search_iter_count) {
+        search_iterate = false;
+        return "Reach maximum iteration";
+    }
+
+    var temp_f = (Math.random() <= threshold_for_goal);
+    if (temp_f) 
+        var q_random = q_goal;
+    else
+        var q_random = random_configuration();
+
+    extend_status = RRTextend(T_a, q_random);
+
+    if (extend_status === "reached" && temp_f) {
+
+        search_iterate = false;
+
+        path_T_a = path_retrieve(T_a);
+        path_T_a.reverse();
+        drawHighlightedPath(path_T_a);
+        return "succeeded";
+    }
+    search_iter_count++;
+       
+    return "iterating";  
 
     // STENCIL: implement a single iteration of an RRT algorithm.
     //   An asynch timing mechanism is used instead of a for loop to avoid 
@@ -451,6 +492,46 @@ function iterateRRT() {
 
 function iterateRRTConnect() {
 
+    if (search_max_iterations < search_iter_count) {
+        search_iterate = false;
+        return "Reach maximum iteration";
+    }
+
+    var q_random = random_configuration();
+
+    extend_status = RRTextend(T_a, q_random);
+    if (extend_status !== 'trapped') {
+        connect_status = RRTconnect(T_b, T_a.vertices[T_a.newest].vertex);
+
+        if (connect_status === 'reached') {
+            search_iterate = false;
+
+            path_T_a = path_retrieve(T_a);
+            path_T_b = path_retrieve(T_b);
+
+            var motion_plan = [];
+            if (T_a_flag) {
+                var path_Ta_reverse = path_T_a.reverse();
+                motion_plan = path_Ta_reverse.concat(path_T_b);
+            }
+            else {
+                var path_Tb_reverse = path_T_b.reverse();
+                motion_plan = path_Tb_reverse.concat(path_T_a);
+            }
+
+            drawHighlightedPath(motion_plan);
+            return "succeeded";
+        }
+    }
+
+    var T_temp = T_a;
+    T_a = T_b;
+    T_b = T_temp;
+
+    T_a_flag = !T_a_flag;
+    search_iter_count++;
+        
+    return "iterating";
 
     // STENCIL: implement a single iteration of an RRT-Connect algorithm.
     //   An asynch timing mechanism is used instead of a for loop to avoid 
@@ -470,7 +551,31 @@ function iterateRRTConnect() {
 }
 
 function iterateRRTStar() {
+    if (search_max_iterations < search_iter_count) {
+        search_iterate = false;
+        return "Reach maximum iteration";
+    }
 
+    var temp_f = (Math.random() <= threshold_for_goal);
+    if (temp_f) 
+        var q_random = q_goal;
+    else
+        var q_random = random_configuration();
+
+    extend_status = RRTstarextend(T_a, q_random);
+
+    if (extend_status === "reached" && temp_f) {
+        search_iterate = false;
+
+        path_T_a = path_retrieve(T_a);
+        path_T_a.reverse();
+        drawHighlightedPath(path_T_a);
+
+        return "succeeded";
+    }
+
+    search_iter_count++;       
+    return "iterating";
 }
 
 //////////////////////////////////////////////////
@@ -662,6 +767,7 @@ function initRRT(q) {
     tree.vertices[0] = {};
     tree.vertices[0].vertex = q;
     tree.vertices[0].edges = [];
+    tree.vertices[0].path_len = 0;
 
     // maintain index of newest vertex added to tree
     tree.newest = 0;
@@ -682,6 +788,8 @@ function insertTreeVertex(tree,q) {
 
     // draw location on canvas
     draw_2D_configuration(q);
+
+    return new_vertex;
 }
 
 function draw_2D_configuration(q) {
@@ -711,17 +819,14 @@ function insertTreeEdge(tree,q1_idx,q2_idx) {
     tree.vertices[q2_idx].edges.push(tree.vertices[q1_idx]);
 
     // draw edge on canvas
-    draw_2D_edge_configurations(tree.vertices[q1_idx].vertex,tree.vertices[q2_idx].vertex); 
+    if (search_alg !== 'RRT-star')
+        draw_2D_edge_configurations(tree.vertices[q1_idx].vertex,tree.vertices[q2_idx].vertex); 
+
+    // maintain the length of path
+    var dist_q1_q2 = euclidean_dist(tree.vertices[q1_idx].vertex, tree.vertices[q2_idx].vertex);
+    dist_q1_q2 += tree.vertices[q2_idx].path_len;
+    tree.vertices[q1_idx].path_len = dist_q1_q2;
 }
-
-//////////////////////////////////////////////////
-/////     MIN HEAP IMPLEMENTATION FUNCTIONS
-//////////////////////////////////////////////////
-
-    // STENCIL: implement min heap functions for graph search priority queue.
-    //   These functions work use the 'priority' field for elements in graph.
-
-
 
 //////////////////////////////////////////////////
 /////     RRT IMPLEMENTATION FUNCTIONS
@@ -734,6 +839,215 @@ function insertTreeEdge(tree,q1_idx,q2_idx) {
     //   newConfig
     //   findNearestNeighbor
     //   dfsPath
+    
+function euclidean_dist(v1, v2){
+    var x_p = v1[0] - v2[0];
+    var y_p = v1[1] - v2[1];
+    var distance = Math.sqrt(Math.pow(x_p, 2) + Math.pow(y_p, 2));
+    return distance;
+}
+
+
+function random_configuration() {
+    
+    var q_random = [];
+    var x_min = range[0][1][1];
+    var y_min = x_min;
+    var x_max = range[1][1][0];
+    var y_max = x_max;
+
+    var x_rand  = x_min + (x_max - x_min)*Math.random();
+    var y_rand  = y_min + (y_max - y_min)*Math.random();
+
+    q_random = [x_rand, y_rand];
+    return q_random;
+}
+
+function new_configuration(start, end) {
+
+    var is_v1_col = !(typeof end[0][0] === 'undefined');
+    var is_v2_col = !(typeof start[0][0] === 'undefined');
+
+    var n = end.length;
+    var v_diff = [];
+
+    if (is_v1_col && is_v2_col) {
+        for(var i=0; i<n; i++) {
+            v_diff[i] = [];
+            v_diff[i][0] = end[i][0] - start[i][0];
+        }        
+    }
+    if (!is_v1_col && !is_v2_col) {
+        for(var i=0; i<n; i++) {
+            v_diff[i] = end[i] - start[i];
+        }        
+    }
+
+    var diff_configuration = v_diff;
+
+    var norm_sum = 0;
+    for (var i=0; i<diff_configuration.length; i++) {
+        norm_sum += diff_configuration[i] * diff_configuration[i];
+    }
+    var norm = Math.sqrt(norm_sum);
+
+    var EPS = 1e-10;
+    if (norm < EPS)
+        var normal_of_diff_config = diff_configuration;
+    if (norm >= EPS){
+        var v_normal = [];
+        for (var i=0; i<diff_configuration.length; i++) {
+                v_normal[i] = diff_configuration[i]/norm;
+            }
+        var normal_of_diff_config = v_normal;
+    }
+
+    var new_config = {};
+    var new_q = [];
+    for (var i=0; i<end.length; i++) {
+        new_q[i] = start[i] + stepsize * normal_of_diff_config[i];
+    }
+
+    new_config.q = new_q;
+    new_config.collision = testCollision(new_q);
+    return new_config;
+}
+
+
+function nearest_v(T, q) {
+
+    var distance = euclidean_dist(q, T.vertices[0].vertex);
+    var min_dist  = distance;
+    var min_index = 0;
+
+    for (var i=1; i<T.vertices.length; i++) {
+        distance = euclidean_dist(q, T.vertices[i].vertex);
+        if (distance < min_dist) {
+            min_dist  = distance;
+            min_index = i;
+        }
+    }
+
+    var nearest_q    = {};
+    nearest_q.index  = min_index;
+    nearest_q.config = T.vertices[min_index].vertex;
+    return nearest_q;
+}
+
+
+function rewire_neighborhood(neighbors, new_config) {
+
+    for (var i=0; i<neighbors.length; i++) {
+
+        var z_near = neighbors[i];
+        var z_near_parent = z_near.edges[0];
+
+        if (typeof(z_near_parent) === 'undefined'){
+           continue;
+        }
+
+        var new_cost = new_config.path_len + euclidean_dist(new_config.vertex, z_near.vertex);
+        if (new_cost < z_near.path_len) {
+
+            z_near.edges[0] = new_config; 
+            new_config.edges.push(z_near);
+            z_near.path_len = new_cost;
+
+            var child_index = z_near_parent.edges.indexOf(z_near);
+            z_near_parent.edges.splice(child_index, 1);
+        }
+    }
+}
+
+function path_retrieve(T) {
+
+    var path = [];
+    var cur_node = T.vertices[T.newest];
+
+    while ((cur_node.vertex[0] != T.vertices[0].vertex[0]) || (cur_node.vertex[1] != T.vertices[0].vertex[1])) {
+
+        path.push(cur_node);
+        cur_node = cur_node.edges[0];
+    }
+
+    path.push(cur_node);
+
+    return path;
+}
+
+function RRTconnect(T, q) {
+
+    extend_status = "advanced"; // set to "advanced" to initiate the while loop
+    while (extend_status === "advanced") {
+        extend_status = RRTextend(T, q);
+    }
+    
+    return extend_status;
+}
+
+function RRTextend(T, q) {
+
+    var vertex_nearest_q = nearest_v(T, q);
+    var new_config = new_configuration(vertex_nearest_q.config, q); 
+
+    if (!new_config.collision) {
+
+        var new_vertex = insertTreeVertex(T, new_config.q);
+        insertTreeEdge(T, T.vertices.length-1, vertex_nearest_q.index);
+
+        var distance_extend = euclidean_dist(new_config.q, q);
+        if (distance_extend > stepsize)
+            return "advanced";
+        else
+            return "reached";
+    }
+    return "trapped"; 
+}
+
+function RRTstarextend(T, q) {
+
+    var vertex_nearest_q = nearest_v(T, q); 
+    var new_config = new_configuration(vertex_nearest_q.config, q); 
+
+    if (!new_config.collision) {
+       
+        var neighbors = [];
+
+        for (var i=0; i<T.vertices.length; i++) {
+            var distance = euclidean_dist(new_config.q, T.vertices[i].vertex);
+            if (distance <= radius_rrt)
+                neighbors.push(T.vertices[i])
+        }
+
+        var cost = euclidean_dist(new_config.q, neighbors[0].vertex) + neighbors[0].path_len;
+        var min_cost  = cost;
+        var min_index = 0; 
+
+        for (var i=1; i<neighbors.length; i++){
+            cost = euclidean_dist(new_config.q, neighbors[i].vertex) + neighbors[i].path_len;
+            if (cost < min_cost) {
+                min_cost  = cost;
+                min_index = i; 
+            }
+        }
+
+        var parent_index = T.vertices.indexOf(neighbors[min_index])
+
+        var new_vertex = insertTreeVertex(T, new_config.q);
+        insertTreeEdge(T, T.vertices.length-1, parent_index);
+
+        rewire_neighborhood(neighbors, new_vertex);
+
+        var distance = euclidean_dist(new_config.q, q);
+        if (distance > stepsize)
+            return "advanced"; 
+        else
+            return "reached";
+    }
+
+    return "trapped"; 
+}
+
 
 </script>
 
