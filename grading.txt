@@ -3,28 +3,35 @@
 
 Assignment 1 feature 1 (4.00/4): PathPlan_Heap: CHECK
     comment: good work
-Assignment 1 feature 2 (0.00/8): PathPlan_AStar: DUE
+Assignment 1 feature 2 (6.40/8): PathPlan_AStar: PERCENT 80
     error: improper path returned or no path returned
     comment: incorrect start or goal location
     error: file or files not found
+    regrade: working
 Assignment 1 feature 3 (2.00/2): PathPlan_DFS: CHECK
     comment: good work
 Assignment 1 feature 4 (2.00/2): PathPlan_BFS: CHECK
     comment: good work
 Assignment 1 feature 5 (2.00/2): PathPlan_BestFirst: CHECK
     comment: good work
-Assignment 2 feature 6 (0.00/4): Pendularm_Euler: DUE
+Assignment 2 feature 6 (3.20/4): Pendularm_Euler: PERCENT 80
     error: improper integration result
-Assignment 2 feature 7 (0.00/4): Pendularm_VelocityVerlet: DUE
+    regrade: working
+Assignment 2 feature 7 (3.20/4): Pendularm_VelocityVerlet: PERCENT 80
     error: improper integration result
-Assignment 2 feature 8 (0.00/4): Pendularm_PID: DUE
+    regrade: working
+Assignment 2 feature 8 (3.20/4): Pendularm_PID: PERCENT 80
     error: improper integration result
-Assignment 2 feature 9 (0.00/1): Pendularm_Verlet: DUE
+    regrade: working
+Assignment 2 feature 9 (0.80/1): Pendularm_Verlet: PERCENT 80
     error: improper integration result
-Assignment 2 feature 10 (0.00/2): Pendularm_RK4: DUE
+    regrade: working
+Assignment 2 feature 10 (1.60/2): Pendularm_RK4: PERCENT 80
     error: improper integration result
-Assignment 2 feature 11 (0.00/3): Pendularm_Double: DUE
+    regrade: working
+Assignment 2 feature 11 (2.40/3): Pendularm_Double: PERCENT 80
     error: improper integration result
+    regrade: working
 Assignment 3 feature 12 (2.00/2): FK_MatrixRoutines: CHECK
     comment: good work
 Assignment 3 feature 13 (8.00/8): FK_Transforms: CHECK
@@ -39,8 +46,9 @@ Assignment 4 feature 17 (6.00/6): FSMDance_Quaternion: CHECK
     comment: good work
 Assignment 4 feature 18 (2.00/2): FSMDance_BaseControl: CHECK
     comment: good work
-Assignment 4 feature 19 (0.00/2): FSMDance_SetpointControl: DUE
+Assignment 4 feature 19 (1.60/2): FSMDance_SetpointControl: PERCENT 80
     error: servo controller does not properly follow clock desired signal
+    regrade: working
 Assignment 4 feature 20 (2.00/2): FSMDance_FSM: CHECK
     comment: good work
 Assignment 4 feature 21 (2.00/2): FSMDance_JointLimits: CHECK
@@ -49,14 +57,14 @@ Assignment 4 feature 22 (2.00/2): FSMDance_Prismatic: CHECK
     comment: good work
 Assignment 4 feature 23 (0.00/2): FSMDance_Rosbridge: PENDING
     
-Assignment 5 feature 24 (0.00/6): IK_Jacobian: PENDING
-    
-Assignment 5 feature 25 (0.00/3): IK_JTranspose: PENDING
-    
-Assignment 5 feature 26 (0.00/3): IK_JPseudoinverse: PENDING
-    
-Assignment 5 feature 27 (0.00/6): IK_EulerAngles: PENDING
-    
+Assignment 5 feature 24 (6.00/6): IK_Jacobian: CHECK
+    comment: good work
+Assignment 5 feature 25 (3.00/3): IK_JTranspose: CHECK
+    comment: good work
+Assignment 5 feature 26 (3.00/3): IK_JPseudoinverse: CHECK
+    robot IK trial targets: 3
+Assignment 5 feature 27 (0.00/6): IK_EulerAngles: DUE
+    error: endeffector does not converge to target for all tests
 Assignment 6 feature 28 (0.00/4): MotionPlan_Collision: PENDING
     
 Assignment 6 feature 29 (0.00/2): MotionPlan_2DRRTConnect: PENDING
@@ -73,6 +81,6 @@ Assignment 8 feature 34 (0.00/4): Advanced: PENDING
     
 Quiz 1: 3.00 of 4
 Quiz 2: 2.83 of 4
-Quiz 3: PENDING
-Quiz 4: PENDING
+Quiz 3: 3.08 of 4
+Quiz 4: 1.67 of 4
 Quiz 5: PENDING
