@@ -166,24 +166,20 @@ function matrix_inverse(m1) {
     return matrix_transpose(m1_inv);
 }
 
-// returns 2D array that is the matrix_invert_affine of m1
-function matrix_invert_affine(m1) {
-
-}
 
 // returns a vector that normalizes the input vector of v1
-function vector_normalize(v1) {
+function vector_normalize(v) {
     var sum = 0;
-    var v1_norm = [];
+    var v_norm = [];
     var i;
-    for (i = 0; i < v1.length; i++){
-        sum += Math.pow(v1[i], 2);
+    for (i = 0; i < v.length; i++){
+        sum += Math.pow(v[i], 2);
     }
     sum = Math.sqrt(sum);
-    for (i = 0; i < v1.length; i++){
-        v1_norm[i] = v1[i]/sum;
+    for (i = 0; i < v.length; i++){
+        v_norm[i] = v[i]/sum;
     }
-    return v1_norm;
+    return v_norm;
 }
 
 // returns the cross product of v1 and v2
