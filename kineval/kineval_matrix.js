@@ -128,7 +128,7 @@ function LU_decomposition(m1) {
 }
 
 // returns a vector that is linear solution of m1 with b1
-function linear_solved(m1, b1) {
+function linear_solve(m1, b1) {
     var x_solution = [];
     var y_partial = [];
     var i, j;
@@ -161,7 +161,7 @@ function matrix_inverse(m1) {
     var m1_inv = [[],[]];
     var i;
     for (i = 0; i < m1.length; i++){
-        m1_inv[i] = linear_solved(m1, iden_matrix[i]);
+        m1_inv[i] = linear_solve(m1, iden_matrix[i]);
     }
     return matrix_transpose(m1_inv);
 }
