@@ -210,41 +210,39 @@ function generate_identity(n) {
     return mat;
 }
 
-// returns the translation matrix with input of tx, ty and tz
-function generate_translation_matrix(tx, ty, tz) {
-    var mat = generate_identity(4);
-    mat[0][3] = tx;
-    mat[1][3] = ty;
-    mat[2][3] = tz;
-    return mat;
+function generate_translation_matrix(Tx, Ty, Tz) {
+    var T = [
+                [1, 0, 0, Tx],
+                [0, 1, 0, Ty],
+                [0, 0, 1, Tz],
+                [0, 0, 0, 1]
+            ];
+    return T;    
 }
 
-// returns the rotation matrix about x-axis with theta
-function generate_rotation_matrix_X(theta) {
-    var mat = generate_identity(4);
-    mat[1][1] = Math.cos(theta);
-    mat[1][2] = -Math.sin(theta);
-    mat[2][1] = Math.sin(theta);
-    mat[2][2] = Math.cos(theta);
-    return mat;
+function generate_rotation_matrix_X(theta_x) {
+    var Rx = [
+                [1, 0, 0, 0],
+                [0, Math.cos(theta_x), -Math.sin(theta_x), 0],
+                [0, Math.sin(theta_x),  Math.cos(theta_x), 0],
+                [0, 0, 0, 1] ];
+    return Rx;
 }
 
-// returns the rotation matrix about y-axis with theta
-function generate_rotation_matrix_Y(theta) {
-    var mat = generate_identity(4);
-    mat[0][0] = Math.cos(theta);
-    mat[0][2] = Math.sin(theta);
-    mat[2][0] = -Math.sin(theta);
-    mat[2][2] = Math.cos(theta);
-    return mat;
+function generate_rotation_matrix_Y(theta_y) {
+    var Ry = [
+                [ Math.cos(theta_y), 0, Math.sin(theta_y), 0],
+                [0, 1, 0, 0],
+                [-Math.sin(theta_y), 0, Math.cos(theta_y), 0],
+                [0, 0, 0, 1] ];
+    return Ry;
 }
 
-// returns the rotation matrix about z-axis with theta
-function generate_rotation_matrix_Z(theta) {
-    var mat = generate_identity(4);
-    mat[0][0] = Math.cos(theta);
-    mat[0][1] = -Math.sin(theta);
-    mat[1][0] = Math.sin(theta);
-    mat[1][1] = Math.cos(theta);
-    return mat;
+function generate_rotation_matrix_Z(theta_z) {
+    var Rz = [
+                [Math.cos(theta_z), -Math.sin(theta_z), 0, 0],
+                [Math.sin(theta_z),  Math.cos(theta_z), 0, 0],
+                [0, 0, 1, 0],
+                [0, 0, 0, 1] ];
+    return Rz;
 }
