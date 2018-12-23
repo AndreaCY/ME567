@@ -55,7 +55,7 @@ Assignment 4 feature 21 (2.00/2): FSMDance_JointLimits: CHECK
     comment: good work
 Assignment 4 feature 22 (2.00/2): FSMDance_Prismatic: CHECK
     comment: good work
-Assignment 4 feature 23 (0.00/2): FSMDance_Rosbridge: PENDING
+Assignment 4 feature 23 (2.00/2): FSMDance_Rosbridge: CHECK
     
 Assignment 5 feature 24 (6.00/6): IK_Jacobian: CHECK
     comment: good work
@@ -63,8 +63,9 @@ Assignment 5 feature 25 (3.00/3): IK_JTranspose: CHECK
     comment: good work
 Assignment 5 feature 26 (3.00/3): IK_JPseudoinverse: CHECK
     robot IK trial targets: 3
-Assignment 5 feature 27 (0.00/6): IK_EulerAngles: DUE
+Assignment 5 feature 27 (4.80/6): IK_EulerAngles: PERCENT 80
     error: endeffector does not converge to target for all tests
+    regrade: working
 Assignment 6 feature 28 (4.00/4): MotionPlan_Collision: CHECK
     comment: good work
 Assignment 6 feature 29 (2.00/2): MotionPlan_2DRRTConnect: CHECK
@@ -78,10 +79,15 @@ Assignment 7 feature 32 (12.00/12): Pitch: CHECK
     
 Assignment 7 feature 33 (6.00/6): Pitch_Advanced: CHECK
     
-Assignment 8 feature 34 (0.00/4): Advanced: PENDING
-    
+Assignment 8 feature 34 (4.00/4): Advanced: PERCENT 100
+    FK_LU: error: failure on pivoting test, 2 points
+    IK_100in60: CHECK
+    Quiz5_CourseImprovement: Thank you for your helpful feedback.  The individual projects of AutoRob are meant to be a complement to the group projects of ROB 550 and EECS 467, but selected group projects in AutoRob could ease the burden while also facilitiating learning and interaction
 Quiz 1: 3.00 of 4
 Quiz 2: 2.83 of 4
 Quiz 3: 3.08 of 4
 Quiz 4: 1.67 of 4
 Quiz 5: 2.67 of 4
+
+Total points: 135.24999999999997
+Final Grade: A-
